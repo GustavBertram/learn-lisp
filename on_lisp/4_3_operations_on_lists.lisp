@@ -49,26 +49,31 @@
   (let ((acc nil))
     (dolist (x lst)
       (let ((val (funcall fn x)))
-        (if val (push val acc))))
-    (nreverse acc)))
+        (if val (push val acc)))) ; The combination of PUSH and NREVERSE
+    (nreverse acc)))              ; is the standard idiom for accumulating a list
 
 (filter #'(lambda (x) (if (numberp x) (1+ x)))
         '(a 1 2 b 3 c d 4))
 
+; GROUP
 
-; TODO: Read these functions!
 (defun group (source n)
   "Group SOURCE into N size sublists"
   (if (zerop n) (error "zero length"))
+  
   (labels ((rec (source acc)
-             (let ((rest (nthcdr n source)))
-               (if (consp rest)
-                   (rec rest (cons (subseq source 0 n) acc))
-                   (nreverse (cons source acc))))))
+             (let ((rest (nthcdr n source))) ; NTHCDR - perform CDR n times on a list.
+               (if (consp rest) ; If there's any left
+                   (rec rest (cons (subseq source 0 n) acc)) ;SUBSEQ - return copy of subsequence
+                   (nreverse (cons source acc)))))) ;return acc
     (if source (rec source nil) nil)))
+
+(nthcdr 2 '(1 2 3 4 5 6)) ; => (3 4 5 6)
+(cons '(a) '(b c)) ; => ((A) B C)
 
 ;; Doubly recursive list utilities
 
+; TODO: Read these functions!
 (defun flatten (x)
   "Makes a list with sublists into a single flat list."
   (labels ((rec (x acc)
