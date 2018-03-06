@@ -61,6 +61,7 @@
 (defun select-by-artist (artist)
   (select (artist-selector artist)))
 
+
 (defun where (&key title artist rating (ripped nil ripped-p))
   #'(lambda (cd)
       (and
@@ -69,3 +70,32 @@
        (if rating (equal (getf cd :rating) rating) t)
        (if ripped-p (equal (getf cd :ripped) ripped) t))))
 
+;; Update
+
+(defun update (selector-fn &key title artist rating (ripped nil ripped-p))
+  (setf *db*
+        (mapcar
+         #'(lambda (row)
+             (when (funcall selector-fn row)
+               (if title (setf (getf row :title) title))
+               (if artist (setf (getf row :artist) artist))
+               (if rating (setf (getf row :rating) rating))
+               (if ripped-p (setf (getf row :ripped) ripped)))
+             row) *db*)))
+
+(defun delete-rows (selector-fn)
+  (setf *db* (remove-if selector-fn *db*)))
+
+;; Macros
+
+(defun make-comparison (field value)
+  `(equal (getf cd ,field) ,value))
+
+(defun make-comparisons-list (fields)
+  (loop while fields
+        collecting (make-comparison (pop fields) (pop fields))))
+
+(defmacro nwhere (&rest clauses)
+  `#'(lambda (cd) (and ,@(make-comparisons-list clauses))))
+  
+(macroexpand-1 '(where :title "Give Us a Break" :ripped t))
