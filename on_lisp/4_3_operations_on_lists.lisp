@@ -28,7 +28,7 @@
   "Make an object a list, but leave a list a list"
   (if (listp obj) obj (list obj)))
 
-;; Longer utilities
+;; Longer utilities ------------------------------
 
 (defun longer (x y)
   "Return T if x is longer that y. More efficient than (> (length x) (length y))."
@@ -40,15 +40,23 @@
         (compare x y)
         (> (length x) (length y)))))
 
-; TODO: Read these functions!
+;; "FILTER is to SOME, what REMOVE-IF-NOT is to FIND-IF."
+;;; FIND-IF returns first matching element, REMOVE-IF-NOT returns ALL matching elements.
+;;; SOME returns first non-nil. ***FILTER returns ALL non-nil.***
+
 (defun filter (fn lst)
-  "Something about SOME?"
+  "Apply fn to every element of lst, and collects the non-nil ones."
   (let ((acc nil))
     (dolist (x lst)
       (let ((val (funcall fn x)))
         (if val (push val acc))))
     (nreverse acc)))
 
+(filter #'(lambda (x) (if (numberp x) (1+ x)))
+        '(a 1 2 b 3 c d 4))
+
+
+; TODO: Read these functions!
 (defun group (source n)
   "Group SOURCE into N size sublists"
   (if (zerop n) (error "zero length"))
