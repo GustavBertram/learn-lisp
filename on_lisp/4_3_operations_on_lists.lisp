@@ -73,16 +73,18 @@
 
 ;; Doubly recursive list utilities
 
-; TODO: Read these functions!
 (defun flatten (x)
   "Makes a list with sublists into a single flat list."
-  (labels ((rec (x acc)
-             (cond ((null x) acc)
-                   ((atom x) (cons x acc))
-                   (t (rec (car x) (rec (cdr x) acc))))))
-    (rec x nil)))
+  (labels ((rec (x acc depth call)
+             (format t "X: ~a ACC: ~a DEPTH: ~a CALL: ~a ~%" x acc depth call)
+             (cond ((null x) acc) ; Return the result
+                   ((atom x) (cons x acc)) ; Add atoms
+                   (t (rec (car x) (rec (cdr x) acc (1+ depth) "A") (1+ depth) "B"))))) ; Else (REC (REC ACC))
+    (rec x nil 0 "C")))
 
+(flatten '(a (b c) ((d e) f)))
 
+; TODO: Read these functions!
 (defun prune (test tree)
   "Recurse into sublists and prune according to TEST"
   (labels ((rec (tree acc)
