@@ -75,12 +75,12 @@
 
 (defun flatten (x)
   "Makes a list with sublists into a single flat list."
-  (labels ((rec (x acc depth call)
-             (format t "X: ~a ACC: ~a DEPTH: ~a CALL: ~a ~%" x acc depth call)
+  (labels ((rec (x acc)
              (cond ((null x) acc) ; Return the result
                    ((atom x) (cons x acc)) ; Add atoms
-                   (t (rec (car x) (rec (cdr x) acc (1+ depth) "A") (1+ depth) "B"))))) ; Else (REC (REC ACC))
-    (rec x nil 0 "C")))
+                   (t (rec (car x)
+                           (rec (cdr x) acc))))))   ; Else (REC (REC ACC))
+    (rec x nil)))
 
 (flatten '(a (b c) ((d e) f)))
 
