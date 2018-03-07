@@ -95,9 +95,14 @@
         ((atom x) (cons x acc))
         (t (flat (car x) (flat (cdr x) acc)))))
 
-(trace flat)
+(load "c:/Downloads/Information/Code/lisp-book-exercises/cl_agitsc/dtrace.lisp")
+(dtrace::dtrace flat)
+
 (flat '(a (b)))
 (flat '(a (b c) ((d e) f)))
+
+(dtrace::duntrace flat)
+
 
 ; TODO: Read these functions!
 (defun prune (test tree)
@@ -112,3 +117,5 @@
                                acc
                                (cons (car tree) acc)))))))
     (rec tree nil)))
+
+(prune #'evenp '(1 2 (3 (4 5) 6) 7 8 (9)))
