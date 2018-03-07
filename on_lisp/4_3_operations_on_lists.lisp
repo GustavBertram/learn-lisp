@@ -84,6 +84,21 @@
 
 (flatten '(a (b c) ((d e) f)))
 
+; Understanding car and cdr
+(car '(a b c))
+(cdr '(a b c))
+(cdr '(a))
+
+; New version of flatten that gives useful trace results.
+(defun flat (x &optional (acc ()))
+  (cond ((null x) acc)
+        ((atom x) (cons x acc))
+        (t (flat (car x) (flat (cdr x) acc)))))
+
+(trace flat)
+(flat '(a (b)))
+(flat '(a (b c) ((d e) f)))
+
 ; TODO: Read these functions!
 (defun prune (test tree)
   "Recurse into sublists and prune according to TEST"
