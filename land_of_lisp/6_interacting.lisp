@@ -40,6 +40,43 @@
              (list 'quote x)))
       (cons (car cmd) (mapcar #'quote-it (cdr cmd))))))
 
+(defparameter *allowed-commands* '(look walk pickup inventory))
+
+(defun game-eval (sexp)
+  (if (member (car sexp) *allowed-commands*)
+      (eval sexp)
+      '(i do not know that command.)))
+
+(defun tweak-text (lst caps lit)
+  (when lst
+    (let ((item (car lst))
+          (rest (cdr lst)))
+      (cond ((eq item #\space)            (cons item (tweak-text rest caps lit)))
+            ((member item '(#\! #\? #\.)) (cons item (tweak-text rest t lit)))
+            ((eq item #\")                (tweak-text rest caps (not lit))) ; Don't cons
+            (lit                          (cons item (tweak-text rest nil lit))) ; No change
+            ;; Next cond was (or caps lit), but seems wrong
+            (caps                         (cons (char-upcase item) (tweak-text rest nil lit)))
+            (t                            (cons (char-downcase item) (tweak-text rest nil nil)))))))
+
+(defun game-print (lst)
+  (princ (coerce (tweak-text (coerce (string-trim "() "
+                                                  (prin1-to-string lst))
+                                     'list)
+                             t
+                             nil)
+                 'string))
+  (fresh-line))
+
+;; (coerce "test123" 'list) ; => (#\t #\e #\s #\t #\1 #\2 #\3)
+;; Since it's coerced to a list of characters, can work on them one by one.
+
+;;(coerce (list (char-upcase #\t) (char-downcase #\E) #\s #\t #\1 #\2 #\3) 'string) ; => "Test123"
+
+;(let ((lit 1))
+;  (cond (lit 'a)
+;        ((or nil lit) 'b)))
+
 ;; Found earlier, to be used later
 (defun game-repl ()
   (let ((cmd (game-read)))
