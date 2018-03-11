@@ -1,7 +1,13 @@
 ;;;; GRAND THEFT WUMPUS
 
-;;; Changes the SLIME directory: 
+;;; Change the SLIME directory, in order to load graph-util correctly:
 ;; , cd c:/Downloads/Information/Code/lisp-book-exercises/land_of_lisp/
+
+;;; TODO
+;; 1. Display what you see when walking around.
+;; 2. Automatically reload browser with known-city-map.png
+;; * https://stackoverflow.com/questions/4680109/how-to-reload-refresh-a-web-page-without-leaving-my-web-development-ide
+;; * https://unix.stackexchange.com/questions/37258/refresh-reload-active-browser-tab-from-command-line
 
 (defparameter *outdir* "c:/Downloads/Information/Code/lisp-book-exercises/land_of_lisp/")
 (load "graph-util")
@@ -211,5 +217,4 @@
 
 (defun charge (pos)
   (handle-direction pos t))
-
 
