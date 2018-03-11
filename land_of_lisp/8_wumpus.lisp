@@ -3,6 +3,7 @@
 ;;; Changes the SLIME directory: 
 ;; , cd c:/Downloads/Information/Code/lisp-book-exercises/land_of_lisp/
 
+(defparameter *outdir* "c:/Downloads/Information/Code/lisp-book-exercises/land_of_lisp/")
 (load "graph-util")
 
 (defparameter *congestion-city-nodes* nil)
@@ -150,3 +151,4 @@
   (draw-city))
 
 ;;; Drawing a City from Partial Knowledge
+
