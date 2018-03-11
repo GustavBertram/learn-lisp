@@ -5,9 +5,12 @@
 
 ;;; TODO
 ;; 1. Display what you see when walking around.
-;; 2. Automatically reload browser with known-city-map.png
+;; 2. Add a game REPL.
+;; 3. Automatically reload browser with known-city-map.png
 ;; * https://stackoverflow.com/questions/4680109/how-to-reload-refresh-a-web-page-without-leaving-my-web-development-ide
 ;; * https://unix.stackexchange.com/questions/37258/refresh-reload-active-browser-tab-from-command-line
+;; * https://code.tutsplus.com/tutorials/4-ways-to-auto-refresh-your-browser-when-designing-new-sites--net-13299
+;; * https://developers.google.com/web/tools/setup/setup-workflow
 
 (defparameter *outdir* "c:/Downloads/Information/Code/lisp-book-exercises/land_of_lisp/")
 (load "graph-util")
