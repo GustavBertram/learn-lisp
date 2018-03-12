@@ -71,4 +71,55 @@ foo ;=> (A Z #(0 0 0 0))
 (defparameter *that-guy* #S(person :name "Bob" :age 35 :waist-size 32 :favorite-color "blue"))
 (person-age *that-guy*)
 
+;;; Handling Data in a Generic Way
 
+;; LENGTH works with sequences (lists, arrays and sequences)
+
+(length '(a b c))
+(length "blub")
+(length (make-array 5))
+
+;; Sequence functions for searching
+(find-if #'numberp '(a b 5 d)) ; first value that satisfies predictate
+(count #\s "mississippi") ; how often a certain object appears in sequence
+(position #\4 "2kewl4skewl") ; position in sequence
+(some #'numberp '(a b 5 d)) ; whether some values satisfy a predictate
+(every #'numberp '(a b 5 d)) ; whether all values satisfy a predictate
+
+;; Sequence Functions for Iterating Across a Sequence
+
+(reduce #'+ '(3 4 6 5 2))
+
+(defun sum (lst)
+  (reduce #'+ lst))
+
+(map 'list ; mapcar that works across all sequences, not just lists
+     (lambda (x)
+       (if (eq x #\s)
+           #\S
+           x))
+     "this is a string")
+
+;; Two More Important Sequence Functions
+(subseq "america" 2 6)
+(sort '(5 8 2 4 9 3 6) #'<)
+
+;; Type Predicates
+
+; ARRAYP CHARACTERP CONSP FUNCTIONP HASH-TABLE-P LISTP SYMBOLP
+
+(defun add (a b)
+  (cond ((and (numberp a) (numberp b)) (+ a b))
+        ((and (listp a) (listp b)) (append a b))))
+
+; DEFMETHOD defines multiple versions of a function for different types
+(defmethod add ((a number) (b number))
+  (+ a b))
+
+(defmethod add ((a list) (b list))
+  (append a b))
+
+(add 3 4)
+(add '(a b) '(c d))
+
+;;; The Orc Battke Game
