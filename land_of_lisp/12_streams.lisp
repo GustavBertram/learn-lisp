@@ -36,10 +36,8 @@
 (with-open-file (my-stream "animal-noises.txt" :direction :input)
   (read my-stream))
 
+
 ;;; Sockets (CLISP)
-
-;; LOL uses CLISP
-
 (defun server()
   #+clisp
   (
@@ -64,7 +62,21 @@
    )
 )
 
+;; CLISP installation
+;; * CLISP installation instructions: http://www.jonathanfischer.net/modern-common-lisp-on-windows/
+;; * CLISP + SLIME - http://pchristensen.com/blog/articles/installing-clisp-emacs-and-slime-on-windows-xp/
+;; * SLIME + CLISP - https://github.com/slime/slime/blob/master/PROBLEMS
+
+;; Error same as these:
+;; * http://comments.gmane.org/gmane.lisp.slime.devel/9853
+;; * https://groups.google.com/forum/#!msg/quicklisp/ysmLXm8js5c/dYXr5zKjXVkJ
+
+;;; SBCL sockets
+
+;; SBCL socket documentation: http://www.sbcl.org/manual/#Networking
 ;; SBCL socket examples: https://github.com/drichardson/examples/blob/master/lisp/sbcl-sockets.lisp
+
+;;; CL-Cookbook sockets
 
 ;; CL-Cookbook: http://cl-cookbook.sourceforge.net/sockets.html
 ;; CLOCC - http://clocc.sourceforge.net/ 
