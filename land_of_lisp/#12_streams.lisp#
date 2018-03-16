@@ -64,12 +64,17 @@
    )
 )
 
+;; SBCL socket documentation: http://www.sbcl.org/manual/#Networking
 ;; SBCL socket examples: https://github.com/drichardson/examples/blob/master/lisp/sbcl-sockets.lisp
 
 ;; CL-Cookbook: http://cl-cookbook.sourceforge.net/sockets.html
 ;; CLOCC - http://clocc.sourceforge.net/ 
 ;; PORT - http://clocc.sourceforge.net/dist/port.html 
 ;; CLLIB - http://clocc.sourceforge.net/dist/cllib.html 
+
+;;; CL-Cookbook socket example
+
+
 
 ;;; String streams
 (defparameter foo (make-string-output-stream))
