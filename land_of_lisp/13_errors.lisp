@@ -1,6 +1,5 @@
-;;;; WEB SERVER
+;;;; Errors
 
-;;; Errors
 (error "foo")
 
 (define-condition foo () ()
@@ -19,7 +18,6 @@
 
 (unwind-protect (/ 1 0)
   (princ "I need to say 'flubyduby' matter what"))
-
 
 
 
