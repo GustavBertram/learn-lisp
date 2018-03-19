@@ -6,6 +6,7 @@ Books:
 * Practical Common Lisp, Peter Seibel
 * On Lisp, Paul Graham
 * Land of Lisp, Conrad Barski
-* A Gentle Introduction to Symbolic Computation, David Touretzky
+* Common Lisp: A Gentle Introduction to Symbolic Computation, David Touretzky
+* Common Lisp: An Interactive Approach, Stuart Shapiro
 
 Copyrights belong to the original authors.
