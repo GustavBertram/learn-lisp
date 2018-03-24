@@ -24,3 +24,4 @@ land_of_lisp/animal-noises.txt
 land_of_lisp/data.txt
 land_of_lisp/networking/
 *.fas
+*.lib
