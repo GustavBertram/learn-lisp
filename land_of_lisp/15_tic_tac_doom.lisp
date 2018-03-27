@@ -104,7 +104,7 @@
 
 (defun print-info (tree)
   (fresh-line)
-  (format t "Current player = ~a" (player-letter (car tree)))
+  (format t "Current player = ~a~%" (player-letter (car tree)))
   (draw-board (cadr tree)))
 
 (defun play-vs-human (tree)
@@ -115,4 +115,4 @@
       'DONE
       ))
 
-; (play-vs-human (game-tree (gen-board) 0 0 t))
+; (play-vs-human (game-tree '(nil nil nil nil) 0))
