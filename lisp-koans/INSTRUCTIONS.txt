@@ -1,0 +1,6 @@
+* M-x shell
+* sbcl --script contemplate.lsp
+* M-x windmove-default-bindings
+* M-x slime
+* M-x load-theme tango-dark
+* C-x ^ 
