@@ -1,7 +1,5 @@
 ;;;; Dice of Doom 1
 
-;;; Note: Only works in CLISP
-
 (defparameter *num-players* 2)
 (defparameter *max-dice* 3)
 (defparameter *board-size* 2)
@@ -57,7 +55,7 @@
     (board-array (f (coerce board 'list) spare-dice))))
 
 (defun board-attack (board player src dst dice)
-  (board-array (loop for pos
+  (board-array (loop for pos from 0 ; "for pos" works in CLISP, but SBCL wants "from 0" added
                      for hex across board
                      collect (cond ((eq pos src) (list player 1))
                                    ((eq pos dst) (list player (1- dice)))
