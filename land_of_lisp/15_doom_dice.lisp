@@ -1,5 +1,7 @@
 ;;;; Dice of Doom 1
 
+;;; Note: Only works in CLISP
+
 (defparameter *num-players* 2)
 (defparameter *max-dice* 3)
 (defparameter *board-size* 2)
@@ -92,7 +94,20 @@
                         (neighbors src))))
             (loop for n below *board-hexnum*
                   collect n))))
-                                  
+
+;(attacking-moves #((0 1) (1 1) (0 2) (1 1)) 0 0)
+
+;(((2 3) ;m?
+;  (0    ;p
+;   #((0 1) (1 1) (0 1) (0 1)) ;b
+;   ((NIL ;m
+;     (1  ;p
+;      #((0 1) (1 1) (0 1) (0 1)) ;b
+;      NIL)))))) ;m
+
+; game-tree: (turn board moves)
+; moves: ( (move game-tree)* )
+
 (defun add-passing-move (board player spare-dice first-move moves)
   (if first-move
       moves
@@ -115,9 +130,9 @@
 
 ;(game-tree #((0 1) (1 1) (0 2) (1 1)) 0 0 t) ;=>
 
-;(0
-; #((0 1) (1 1) (0 2) (1 1))
-; (((2 3) (0
+;(0                           ;player
+; #((0 1) (1 1) (0 2) (1 1))  ;board
+; (((2 3) (0                  ;moves
 ;          #((0 1) (1 1) (0 1) (0 1))
 ;          ((NIL (1
 ;                 #((0 1) (1 1) (0 1) (0 1))
