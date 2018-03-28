@@ -42,17 +42,20 @@
                                    (second hex))))))
 ;;; Generating the game tree
 
+;; New TCO version
 (defun add-new-dice (board player spare-dice)
-  (labels ((f (lst n)
-             (cond ((null lst) nil)
-                   ((zerop n) lst)
+  (labels ((f (lst n acc)
+             (cond ((zerop n) (append (reverse acc) lst))
+                   ((null lst) (reverse acc))
                    (t (let ((cur-player (caar lst))
                             (cur-dice (cadar lst)))
-                        (if (and (eq cur-player player) (< cur-dice *max-dice*))
-                            (cons (list cur-player (1+ cur-dice))
-                                  (f (cdr lst) (1- n)))
-                            (cons (car lst) (f (cdr lst) n))))))))
-    (board-array (f (coerce board 'list) spare-dice))))
+                        (if (and (eq cur-player player)
+                                 (< cur-dice *max-dice*))
+                            (f (cdr lst)
+                               (1- n)
+                               (cons (list cur-player (1+ cur-dice)) acc))
+                            (f (cdr lst) n (cons (car lst) acc))))))))
+    (board-array (f (coerce board 'list) spare-dice ()))))
 
 (defun board-attack (board player src dst dice)
   (board-array (loop for pos from 0 ; "for pos" works in CLISP, but SBCL wants "from 0" added
