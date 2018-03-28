@@ -188,3 +188,42 @@
       (announce-winner (cadr tree))))
 
 ; (play-vs-human (game-tree (gen-board) 0 0 t))
+; (play-vs-human (game-tree #((1 2)(0 3)(1 1)(1 1)) 0 0 t))
+
+;;; Creating an intelligent opponent
+;; 1. Look at each available move.
+;; 2. Give a point rating to the board position resulting from the move.
+;; 3. Pick the move with the maximum point rating.
+
+;; Minmax algorithm: Pick move that is best for us, predict opponent is picking move that is worst for us.
+
+(defun rate-position (tree player)
+  (let ((moves (caddr tree)))
+    (if moves
+        (apply (if (eq (car tree) player)
+                   #'max
+                   #'min)
+               (get-ratings tree player))
+        (let ((w (winners (cadr tree))))
+          (if (member player w)
+              (/ 1 (length w))
+              0)))))
+
+(defun get-ratings (tree player)
+  (mapcar (lambda (move)
+            (rate-position (cadr move) player))
+          (caddr tree)))
+
+;; Computer player
+
+(defun handle-computer (tree)
+  (let ((ratings (get-ratings tree (car tree))))
+    (cadr (nth (position (apply #'max ratings) ratings) (caddr tree)))))
+
+(defun play-vs-computer (tree)
+  (print-info tree)
+  (cond ((null (caddr tree)) (announce-winner (cadr tree)))
+        ((zerop (car tree)) (play-vs-computer (handle-human tree)))
+        (t (play-vs-computer (handle-computer tree)))))
+
+; (play-vs-computer (game-tree (gen-board) 0 0 t))
