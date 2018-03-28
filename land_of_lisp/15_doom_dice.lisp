@@ -2,7 +2,7 @@
 
 (defparameter *num-players* 2)
 (defparameter *max-dice* 3)
-(defparameter *board-size* 2)
+(defparameter *board-size* 3)
 (defparameter *board-hexnum* (* *board-size* *board-size*))
 
 ;;; Representing the board
@@ -60,7 +60,6 @@
                      collect (cond ((eq pos src) (list player 1))
                                    ((eq pos dst) (list player (1- dice)))
                                    (t hex)))))
-
 (defun neighbors (pos)
   (let ((up (- pos *board-size*))
         (down (+ pos *board-size*)))
@@ -71,6 +70,13 @@
                              (list (1+ pos) (1+ down))))
           when (and (>= p 0) (< p *board-hexnum*))
             collect p)))
+
+;; Memoize neighbors
+(let ((old-neighbors (symbol-function 'neighbors))
+      (previous (make-hash-table)))
+  (defun neighbors (pos)
+    (or (gethash pos previous)
+        (setf (gethash pos previous) (funcall old-neighbors pos)))))
 
 (defun attacking-moves (board cur-player spare-dice)
   (labels ((player (pos)
@@ -125,6 +131,13 @@
                           spare-dice
                           first-move
                           (attacking-moves board player spare-dice))))
+
+;; Memoize game-tree
+(let ((old-game-tree (symbol-function 'game-tree))
+      (previous (make-hash-table :test #'equalp)))
+  (defun game-tree (&rest rest)
+    (or (gethash rest previous)
+        (setf (gethash rest previous) (apply old-game-tree rest)))))
 
 ;(game-tree #((0 1) (1 1) (0 2) (1 1)) 0 0 t) ;=>
 
@@ -209,12 +222,23 @@
               (/ 1 (length w))
               0)))))
 
+;; Memoize rate-position
+(let ((old-rate-position (symbol-function 'rate-position))
+      (previous (make-hash-table)))
+  (defun rate-position (tree player)
+    (let ((tab (gethash player previous)))
+      (unless tab
+        (setf tab (setf (gethash player previous) (make-hash-table))))
+      (or (gethash tree tab)
+          (setf (gethash tree tab)
+                (funcall old-rate-position tree player))))))
+
 (defun get-ratings (tree player)
   (mapcar (lambda (move)
             (rate-position (cadr move) player))
           (caddr tree)))
 
-;; Computer player
+;;; Computer player
 
 (defun handle-computer (tree)
   (let ((ratings (get-ratings tree (car tree))))
@@ -227,3 +251,5 @@
         (t (play-vs-computer (handle-computer tree)))))
 
 ; (play-vs-computer (game-tree (gen-board) 0 0 t))
+; (play-vs-computer (game-tree #((1 1) (1 1) (1 2) (0 3) (1 2) (1 1) (0 3) (1 1) (1 1)) 0 0 t))
+
