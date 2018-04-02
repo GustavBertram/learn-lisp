@@ -145,11 +145,44 @@
 (defun fcircle (center radius color)
   (ftag 'circle `((cx ,@(car center)) ;Not sure why I need ,@ instead of , but if I don't I get (50)
                   (cy . ,(cdr center)) ; This works.
-                  (r ,@radius) ; Somehow translates to (R . 50)
+                  (r ,@radius) ; Somehow translates to (R . 50), which I wasn't expecting but good to know.
+                  ; ftag expects (X . Y) which is why (X Y) bugs out.
                   (style ,@(svg-style color)))))
 
 ;; (fcircle '(50 . 50) 50 '(255 0 0))
 ;; (fsvg (fcircle '(50 . 50) 50 '(255 0 0)) (fcircle '(100 . 100) 50 '(0 0 255)))
 ;; `(test 123) ;=> (test 123) ; Output as data, not executed as code.
 ;; '(test 123)
+
+;;; Building a more complicated example
+
+(defun polygon (points color)
+  (tag polygon (points (format nil
+                               "~{~a,~a ~}"
+                               (mapcan (lambda (tp)
+                                         (list (car tp) (cdr tp))) ; (X . Y) so cdr not cadr
+                                       points))
+                       style (svg-style color))))
+
+(defun random-walk (value length)
+  (unless (zerop length)
+    (cons value
+          (random-walk (if (zerop (random 2))
+                           (1- value)
+                           (1+ value))
+                       (1- length)))))
+
+;; (random-walk 100 10)
+
+(with-open-file (*standard-output* "random_walk.svg"
+                                   :direction :output
+                                   :if-exists :supersede)
+  (svg (loop repeat 10
+             do (polygon (append '((0 . 200))
+                                 (loop for x from 0 ; Needs "from 0" to make it work in SBCL
+                                       for y in (random-walk 100 400)
+                                       collect (cons x y))
+                                 '((400 . 200)))
+                         (loop repeat 3
+                               collect (random 256))))))
 
