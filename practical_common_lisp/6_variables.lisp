@@ -44,5 +44,56 @@
    #'(lambda () (decf count))
    #'(lambda () count)))
 
-;;; Dynamic or special variables
+;;; Dynamic / special variables
 
+;; Will be set once
+(defvar *count* 0
+  "Count of widgets made so far.")
+
+;; Will be set every time it's evaluated
+(defparameter *gap-tolerance* 0.001
+  "Tolerance allowed in widget gaps.")
+
+(defvar *x* 10)
+(defun foo ()
+  (format t "X: ~d~%" *x*))
+
+(foo)
+
+(let ((*x* 20))
+  (foo))
+
+(defun bar ()
+  (foo)
+  (let ((*x* 20)) (foo))
+  (foo))
+
+(bar)
+
+(defun foo ()
+  (format t "Before assignment~18tX: ~d~%" *x*)
+  (setf *x* (+ 1 *x*))
+  (format t "After assignment~18tX: ~d~%" *x*))
+
+(bar)
+
+(defconstant +pi+ 22/7
+  "Aproximate value of Pi. Very aproximate.")
+
+;; (let ((+pi+ 3))) ; Throws an error
+
+;;; Assignment
+
+;; (setf <place> <value>)
+
+;; Can set multiple values at once
+(setf x 1 y 2)
+
+(incf x)
+(decf y)
+
+;; Swap values
+(rotatef x y)
+
+;; Shift values over
+(shiftf x y 20)
