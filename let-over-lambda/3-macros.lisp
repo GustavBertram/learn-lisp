@@ -48,4 +48,21 @@
 
 ;;; Control structures ---------------------------------------------------------
 
+;; Replicates LET functionality from Scheme
+(defmacro nlet (n letargs &rest body)
+  `(labels ((,n ,(mapcar #'car letargs)
+              ,@body))
+     (,n ,@(mapcar #'cadr letargs))))
+
+(defun nlet-fact (n)
+  (nlet fact ((n n))
+        (if (zerop n)
+            1
+            (* n (fact (1- n))))))
+
+(macroexpand
+ '(nlet fact ((n n))
+   (if (zerop n)
+       1
+       (* n (fact (1- n))))))
 
