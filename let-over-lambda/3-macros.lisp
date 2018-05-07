@@ -66,3 +66,15 @@
        1
        (* n (fact (1- n))))))
 
+;;; free variables ---
+
+;; X is a free variabke
+;; (+ 1 x)
+
+(let ((x 1)) ; X is captured
+  (+ 1 x))
+
+;; Free variable injection
+(defmacro x-injector ()
+  'x)
+
