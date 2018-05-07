@@ -66,9 +66,9 @@
        1
        (* n (fact (1- n))))))
 
-;;; free variables ---
+;;; Free variables -------------------------------------------------------------
 
-;; X is a free variabke
+;; X is a free variable
 ;; (+ 1 x)
 
 (let ((x 1)) ; X is captured
@@ -77,4 +77,46 @@
 ;; Free variable injection
 (defmacro x-injector ()
   'x)
+
+;;; Unwanted capture -----------------------------------------------------------
+
+;; NIF from On Lisp
+;; (nif x "positive" "zero" "negative")
+
+(defmacro nif-buggy (expr pos zero neg)
+  `(let ((obscure-name ,expr))
+     (cond ((plusp obscure-name) ,pos)
+           ((zerop obscure-name) ,zero)
+           (t ,neg))))
+
+(defparameter x 10)
+
+;; No bug
+(nif-buggy
+ x
+ (let ((obscure-name 'pos))
+   obscure-name)
+ 'zero
+ 'neg)
+
+;; Bug
+(let ((obscure-name 'pos))
+  (nif-buggy
+   x
+   obscure-name
+   'zero
+   'neg))
+
+;; Safe version of NIF
+(defmacro nif (expr pos zero neg)
+  (let ((g (gensym)))
+    `(let ((,g ,expr))
+       (cond ((plusp ,g) ,pos)
+             ((zerop ,g) ,zero)
+             (t ,neg)))))
+
+
+;; WITH-GENSYMS
+;; (with-gensyms (a b c) ...)
+
 
