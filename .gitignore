@@ -26,3 +26,4 @@ land_of_lisp/networking/
 *.fas
 *.lib
 land_of_lisp/random_walk.svg
+*.bak
