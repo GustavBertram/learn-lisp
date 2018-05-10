@@ -1,5 +1,5 @@
 #lang sicp
-;;;; Exercises and answers from SICP
+;;;; Exercises and answers from SICP Ch 1.1
 
 ;;; Exercise 1.6.
 ;; Alyssa P. Hacker doesn't see why if needs to be provided as a special form.

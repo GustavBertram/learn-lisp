@@ -1,5 +1,5 @@
 #lang sicp
-;;;; Exercises and answers from SICP
+;;;; Exercises and answers from SICP Ch 1.1
 
 ;;; Exercise 1.8.
 ;; Newton's method for cube roots is based on the fact that if y is an
