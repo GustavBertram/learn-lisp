@@ -14,3 +14,13 @@
 
 ;; Write a procedure that computes elements of Pascal's triangle by means of a recursive process.
 
+; Assume an (n,m) mapping for n'th row and m'th number in row, starting at 0,0
+
+(define (pascal n m)
+  (cond ((< n 0) 0) ; Out of bounds
+        ((< n m) 0) ; Out of bounds
+        ((= m 0) 1)
+        ((= m n) 1)
+        (else (+ (pascal (dec n) (dec m))
+                 (pascal (dec n) m)))))
+
