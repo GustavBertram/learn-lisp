@@ -59,8 +59,9 @@
   (cond ((< n 0) 0) ; Out of bounds
         ((= n 0) 1) ; Base case
         ((or (triangle-number? n) (triangle-number? (inc n))) 1)
-        (else (+ (pascaln (- n (pascal-row n) 1))
-                 (pascaln (- n (pascal-row n)))))))
+        (else (let ((row (pascal-row n)))
+                (+ (pascaln (- n row 1))
+                   (pascaln (- n row)))))))
     
   
     
