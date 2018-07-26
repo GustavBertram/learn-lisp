@@ -12,3 +12,6 @@ Common Lisp Books:
 
 Scheme Books:
 * **Structure and Interpretation of Computer Programs**, Hal Abelson, Jerry Sussman and Julie Sussman
+
+Clojure Books:
+* **Clojure for the Brave and True**, Daniel Higginbotham

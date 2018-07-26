@@ -1,0 +1,34 @@
+#+TITLE: Clojure for the Brave and True, Book Notes
+
+* [[http://www.braveclojure.com/clojure-for-the-brave-and-true/][Contents]]
+
+* Front Matter
+*** Foreword
+*** Acknowledgements
+*** [[http://www.braveclojure.com/introduction/][Introduction]]
+    - Four aspects of language learning:
+      - Tooling
+      - Language
+      - Artifacts
+      - Mindset
+*** Part I: Environment Setup
+***** [[http://www.braveclojure.com/getting-started/][Chapter 1 - Getting Started - Building, Running and the REPL]]
+***** [[https://www.braveclojure.com/basic-emacs/][Chapter 2 - Basic Emacs - How to use Emacs, an excellent Clojure Editor]]
+*** Part II: Language Fundamentals
+***** [[http://www.braveclojure.com/do-things/][Chapter 3 - Do things: A Clojure Crash Course]]
+***** Chapter 4 - Core Functions in Depth
+***** Chapter 5 - Functional Programming
+***** Chapter 6 - Organizing your project: A Librarian's Tale
+***** Chapter 7 - Clojure Alchemy: Reading, Evaluation, And Macros
+***** Chapter 8 - Writing macros
+*** Part III: Language Fundamentals
+***** Chapter 9 - Concurrent and Parallel Programming
+***** Chapter 10 - Clojure Metaphysics: Atoms, Refs, Vars, and Cuddle Zombies
+***** Chapter 11 - Master Concurrent Processes with core.async
+***** Chapter 12 - Interacting with Java
+*** Back Matter
+***** Appendix A - Building and developing with Leiningen
+***** Appendix B - Boot, the Fancy Clojure Build Framework
+***** Farewell
+
+
