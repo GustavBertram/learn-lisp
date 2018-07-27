@@ -13,6 +13,11 @@
       - Mindset
 *** Part I: Environment Setup
 ***** [[http://www.braveclojure.com/getting-started/][Chapter 1 - Getting Started - Building, Running and the REPL]]
+******* Install Leiningen
+        - Run cmd as administrator
+        - choco install lein
+******* Create a new app using Leiningen
+        - lein new app 1-clojure-noob
 ***** [[https://www.braveclojure.com/basic-emacs/][Chapter 2 - Basic Emacs - How to use Emacs, an excellent Clojure Editor]]
 *** Part II: Language Fundamentals
 ***** [[http://www.braveclojure.com/do-things/][Chapter 3 - Do things: A Clojure Crash Course]]
