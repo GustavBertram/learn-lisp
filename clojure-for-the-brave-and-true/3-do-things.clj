@@ -335,4 +335,103 @@ at your dangling unmentionables! - the Tick")
 
 ;;; Anonymous functions
 
-  
+;(fn [param-list]
+;  function-body)
+ 
+(map (fn [name] (str "Hi " name))
+     ["Voldemort" "Mr. Magoo"])
+
+((fn [x] (* x 3)) 8)
+
+(def my-special-multiplier (fn [x] (* 3 x)))
+(my-special-multiplier 12)
+
+#(* % 3) ; Anonymous function shorthand
+(#(* % 3) 8)
+
+(map #(str "Hi, " %)
+     ["Darth Vader" "Mr. Magoo"])
+
+(#(str %1 " and " %2) "cornbread" "butter beans") ; Can use %1 %2 etc 
+
+(#(identity %&) 1 "blarg" :yip) ; %& for a rest parameter
+
+
+;;; Returning functions
+
+(defn inc-maker
+  "Create a custom incrementor"
+  [inc-by]
+  #(+ % inc-by))
+
+(def inc3 (inc-maker 3))
+
+(inc3 7)
+
+;;;; PUTTING IT ALL TOGETHER ---------------------------------------------------
+
+(def asym-hobbit-body-parts
+  [{:name "head" :size 3}
+   {:name "left-eye" :size 1}
+   {:name "left-ear" :size 1}
+   {:name "mouth" :size 1}
+   {:name "nose" :size 1}
+   {:name "neck" :size 2}
+   {:name "left-shoulder" :size 3}
+   {:name "left-upper-arm" :size 3}
+   {:name "chest" :size 10}
+   {:name "back" :size 10}
+   {:name "left-forearm" :size 3}
+   {:name "abdomen" :size 6}
+   {:name "left-kidney" :size 1}
+   {:name "left-hand" :size 2}
+   {:name "left-knee" :size 2}
+   {:name "left-thigh" :size 4}
+   {:name "left-lower-leg" :size 3}
+   {:name "left-achilles" :size 1}
+   {:name "left-foot" :size 2}])
+
+(defn matching-part
+  [part]
+  {:name (clojure.string/replace (:name part) #"^left-" "right-")
+   :size (:size part)})
+
+(matching-part {:name "left-nostril" :size 97})
+
+(defn symmetrize-body-parts
+  "Expects a seq of maps that have a :name and :size"
+  [asym-body-parts]
+  (loop [remaining-asym-parts asym-body-parts
+         final-body-parts []]
+    (if (empty? remaining-asym-parts)
+      final-body-parts
+      (let [[part & remaining] remaining-asym-parts]
+        (recur remaining
+               (into final-body-parts
+                     (set [part (matching-part part)])))))))
+
+(symmetrize-body-parts asym-hobbit-body-parts)
+
+;;; let
+
+(let [x 3]
+  x)
+
+(def dalmatian-list
+  ["Pongo" "Perdita" "Puppy 1" "Puppy 2"])
+
+(let [dalmatians (take 2 dalmatian-list)]
+  dalmatians)
+
+(def x 0)
+(let [x 1] x)
+(let [x (inc x)] x)
+
+(let [[pongo & dalmatians] dalmatian-list] ; Can use destructuring in let
+  [pongo dalmatians])
+ 
+(let [a 12 ; Multiple let arguments
+      b 32]
+  (+ a b))
+
+
