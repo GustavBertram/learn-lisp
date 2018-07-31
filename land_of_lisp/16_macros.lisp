@@ -84,12 +84,12 @@
                 ,@body))
        (self ,@(mapcar #'cdr p)))))
 
-(recurse (n 9)
-  (fresh-line)
-  (if (zerop n)
-      (princ "lift-off!")
-      (progn (princ n)
-             (self (1- n)))))
+;(recurse (n 9)
+;  (fresh-line)
+;  (if (zerop n)
+;      (princ "lift-off!")
+;      (progn (princ n)
+;             (self (1- n)))))
 
 (defun my-length3 (lst)
   (recurse (lst lst
@@ -98,7 +98,7 @@
            (self tail (1+ acc))
            acc)))
 
-(my-length3 '(1 2 3 4 5))
+;(my-length3 '(1 2 3 4 5))
 
 ;;; There may be simpler ways to do what you need without macros
 
@@ -108,4 +108,4 @@
           lst
           :initial-value 0))
 
-(my-length4 '(1 2 3 4 5))
+;(my-length4 '(1 2 3 4 5))

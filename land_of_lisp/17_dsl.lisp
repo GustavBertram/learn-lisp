@@ -1,5 +1,7 @@
 ;;;; MAKING A DOMAIN SPECIFIC LANGUAGE
 
+(load "16_macros.lisp")
+
 (defun print-tag (name alst closingp)
   (princ #\<)
   (when closingp
@@ -40,6 +42,15 @@
 ;; So it looks like these print " but return "\"" as string representations.
 ;; (format nil "\"")
 ;; (princ "\"")
+
+(defun pairs (lst)
+  (labels ((f (lst acc)
+             (split lst
+                    (if tail
+                        (f (cdr tail) (cons (cons head (car tail)) acc))
+                        (reverse acc))
+                    (reverse acc))))
+    (f lst nil)))
 
 ;; Okay, I see why he's printing. Trying to justify using a macro.
 (defmacro tag (name atts &body body)
