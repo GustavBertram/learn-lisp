@@ -22,6 +22,9 @@
 (defparameter *dice-scale* 40)
 (defparameter *dot-size* 0.05)
 
+(defparameter *board-size* 2)
+(defparameter *board-hexnum* (* *board-size* *board-size*))
+
 ;;; Drawing a die
 
 (defun draw-die-svg (x y col)
@@ -108,8 +111,10 @@
     (if (> (length w) 1)
         (format t "The game is a tie between ~a" (mapcar #'player-letter w))
         (format t "The winner is ~a" (player-letter (car w)))))
+  (tag br ())
   (tag a (href "game.html")
-    (princ " play again")))
+    (princ " play again"))
+  (tag br ()))
 
 (defun web-handle-human (pos)
   (cond ((not pos) (princ "Please choose a hex to move from:"))
@@ -131,7 +136,8 @@
            (princ "You may now ")
            (tag a (href (make-game-link 'pass))
              (princ "pass"))
-           (princ " or make another move:"))))
+           (princ " or make another move:")))
+  (tag br ()))
 
 (defun web-handle-computer ()
   (setf *cur-game-tree* (handle-computer *cur-game-tree*))
@@ -155,25 +161,27 @@
                                   (lazy-mapcar #'caar (caddr tree)))))))
 
 (defun dod-request-handler (path header params)
-  (if (equal path "game.html")
-      (progn (princ "<!doctype html>")
-             (tag center ()
-               (princ "Welcome to DICE OF DOOM!")
-               (tag br ())
-               (let ((chosen (assoc 'chosen params)))
-                 (when (or (not *cur-game-tree*) (not chosen))
-                   (setf chosen nil)
-                   (web-initialize))
-                 (cond ((lazy-null (caddr *cur-game-tree*))
-                        (web-announce-winner (cadr *cur-game-tree*)))
-                       ((zerop (car *cur-game-tree*))
-                        (web-handle-human
-                         (when chosen
-                           (read-from-string (cdr chosen)))))
-                       (t (web-handle-computer))))
-               (tag br ())
-               (draw-dod-page *cur-game-tree* *from-tile*)))
-      (princ "Sorry... I don't know that page.")))
+  (cond
+    ((equal path "game.html")
+     (progn (princ "<!doctype html>")
+            (tag center ()
+              (princ "Welcome to DICE OF DOOM!")
+              (tag br ())
+              (let ((chosen (assoc 'chosen params)))
+                (when (or (not *cur-game-tree*) (not chosen))
+                  (setf chosen nil)
+                  (web-initialize))
+                (cond ((lazy-null (caddr *cur-game-tree*))
+                       (web-announce-winner (cadr *cur-game-tree*)))
+                      ((zerop (car *cur-game-tree*))
+                       (web-handle-human
+                        (when chosen
+                          (read-from-string (cdr chosen)))))
+                      (t (web-handle-computer))))
+              (tag br ())
+              (draw-dod-page *cur-game-tree* *from-tile*))))
+    ((equal path "exit") (error))
+    (t (princ "Sorry... I don't know that page."))))
 
 (defun web-initialize ()
   (setf *from-tile* nil)
