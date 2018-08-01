@@ -87,18 +87,27 @@ bar: abc, 123
                         (params (append (cdr url)
                                         (get-content-params stream header)))
                         (*standard-output* stream))
+                   (respond)
                    (funcall request-handler path header params))))
       (socket-server-close socket))))
+
+;; Updating to give a proper HTTP response so the HTML is rendered.
+(defun respond ()
+  (format t "HTTP/1.1 200 OK~%")
+  (format t "content-type: text/html~%~%"))
 
 ;;; Building a dynamic website
 
 (defun hello-request-handler (path header params)
-  (if (equal path "greeting")
-      (let ((name (assoc 'name params)))
-        (if (not name)
-            (princ "<html><form>What is your name?<input name='name' /></form></html>")
-            (format t "<html>Nice to meet you, ~a!</html>" (cdr name))))
-      (princ "Sorry... I don't know that page.")))
+  (cond
+    ((equal path "greeting") (let ((name (assoc 'name params)))
+                               (if (not name)
+                                   (princ "<html><form>What is your name?<input name='name' /></form></html>")
+                                   (format t "<html>Nice to meet you, ~a!</html>" (cdr name)))))
+    ((equal path "exit") (error))
+    (t (princ "Sorry.. I don't know that page."))))
+
+;; (hello-request-handler "greetigs" '() '())
 
 ;;(serve #'hello-request-handler)
 

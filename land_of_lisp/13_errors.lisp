@@ -17,7 +17,7 @@
   (bar () "somebody signaled bar!"))
 
 (unwind-protect (/ 1 0)
-  (princ "I need to say 'flubyduby' matter what"))
+  (princ "I need to say 'flubyduby' no matter what"))
 
 
 
