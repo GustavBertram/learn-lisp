@@ -15,3 +15,4 @@ Scheme Books:
 
 Clojure Books:
 * **Clojure for the Brave and True**, Daniel Higginbotham
+* **Web Development with  Clojure, 2nd Edition**, Dmitri Sotnikov

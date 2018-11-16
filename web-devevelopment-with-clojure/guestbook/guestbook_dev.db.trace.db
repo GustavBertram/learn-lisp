@@ -1,0 +1,13 @@
+2018-11-13 23:25:39 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Syntax error in SQL statement "​CREATE​[*] ​TABLE​ GUESTBOOK
+(ID ​INTEGER​ ​PRIMARY​ ​KEY​ ​AUTO_INCREMENT​,
+​NAME​ ​VARCHAR​(30),
+MESSAGE ​VARCHAR​(200),
+​TIMESTAMP​ ​TIMESTAMP​);
+ "; SQL statement:
+​CREATE​ ​TABLE​ guestbook
+(id ​INTEGER​ ​PRIMARY​ ​KEY​ ​AUTO_INCREMENT​,
+​name​ ​VARCHAR​(30),
+message ​VARCHAR​(200),
+​timestamp​ ​TIMESTAMP​);
+ [42000-192]
