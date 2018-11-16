@@ -1,7 +1,6 @@
 #+TITLE: Clojure for the Brave and True, Book Notes
 
 * [[http://www.braveclojure.com/clojure-for-the-brave-and-true/][Contents]]
-
 * Front Matter
 *** Foreword
 *** Acknowledgements
@@ -21,6 +20,7 @@
 ***** [[https://www.braveclojure.com/basic-emacs/][Chapter 2 - Basic Emacs - How to use Emacs, an excellent Clojure Editor]]
 *** Part II: Language Fundamentals
 ***** [[http://www.braveclojure.com/do-things/][Chapter 3 - Do things: A Clojure Crash Course]]
+      - 
 ***** Chapter 4 - Core Functions in Depth
 ***** Chapter 5 - Functional Programming
 ***** Chapter 6 - Organizing your project: A Librarian's Tale

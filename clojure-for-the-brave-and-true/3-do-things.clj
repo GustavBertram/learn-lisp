@@ -425,7 +425,7 @@ at your dangling unmentionables! - the Tick")
 
 (def x 0)
 (let [x 1] x)
-(let [x (inc x)] x)
+(let [x (inc x)] x) ; Referring to an existing binding
 
 (let [[pongo & dalmatians] dalmatian-list] ; Can use destructuring in let
   [pongo dalmatians])
@@ -434,4 +434,112 @@ at your dangling unmentionables! - the Tick")
       b 32]
   (+ a b))
 
+(def empty-vector [:a])
+(into empty-vector (set [:a :a :b])) ; => [:a :b :a]
 
+;;; loop
+
+(loop [iteration 0]
+  (println (str "Iteration " iteration))
+  (if (> iteration 3)
+    (println "Goodbye!")
+    (recur (inc iteration))))
+
+(defn recursive-printer
+  ([] ; 0 parameter definition
+   (recursive-printer 0))
+  ([iteration] ; 1 parameter definition
+   (println iteration)
+   (if (> iteration 3)
+     (println "Goodbye!")
+     (recursive-printer (inc iteration)))))
+
+;;; Regular expressions
+
+;; #"regular-expression"
+
+(re-find #"^left-" "left-eye")
+(re-find #"^left-" "cleft-chin")
+(re-find #"^left-" "wongleblart")
+
+(defn matching-part
+  [part]
+  {:name (clojure.string/replace (:name part) #"^left-" "right-")
+   :size (:size part)})
+
+(matching-part {:name "left-eye" :size 1})
+
+(matching-part {:name "head" :size 3})
+
+;;; Better Symmetrizer with reduce
+
+(reduce + [1 2 3 4])
+
+(defn my-reduce
+  ([f initial coll]
+   (loop [result initial
+          remaining coll]
+     (if (empty? remaining)
+       result
+       (recur (f result (first remaining)) (rest remaining)))))
+  ([f [head & tail]]
+   (my-reduce f head tail)))
+
+(defn better-symmetrize-body-parts
+  "Expects a seq of maps that have a :name and :size"
+  [asym-body-parts]
+  (reduce (fn [final-body-parts part]
+            (into final-body-parts (set [part (matching-part part)])))
+          []
+          asym-body-parts))
+
+;;; Hobbit Violence
+
+(defn hit
+  [asym-body-parts]
+  (let [sym-parts (better-symmetrize-body-parts asym-body-parts)
+        body-part-size-sum (reduce + (map :size sym-parts))
+        target (rand body-part-size-sum)]
+    (loop [[part & remaining] sym-parts
+           accumulated-size (:size part)]
+      (if (> accumulated-size target)
+        part
+        (recur remaining (+ accumulated-size (:size (first remaining))))))))
+
+(hit asym-hobbit-body-parts)
+
+;;;; EXERCISES
+
+;;; Use the str, vector, list, hash-map, and hash-set functions.
+
+(str "test " "more testing")
+(vector 1 :a "sdf")
+[1 :a "sdf"]
+(list "sdf" :a 4)
+'("sdf" :a 4)
+`("sdf" :a 4)
+(quote ("sdf" :a 4))
+(hash-map :a 1 :b 2)
+{:a 2, :b 4}
+(hash-set 1 :a "test")
+#{:a 1 "test"}
+
+;;; Write a function that takes a number and adds 100
+
+(defn add100 [n] (+ 100 n))
+(add100 5)
+
+;;; Write a function, dec-maker, that works exactly like the function inc-maker except with subtraction
+
+(defn dec-maker [n] (fn [m] (- m n)))
+(def dec9 (dec-maker 9))
+(dec9 11)
+
+;;; Write a function, mapset, that works like map except the return value is a set
+
+(defn mapset [function input] (set (map function input)))
+(mapset inc [1 1 2 2])
+
+;;; Create a function that's similar to symmetrize-body-parts except that it has to work with weird space aliens with radial symmetry. Instead of two eyes, arms, legs, and so on, they have five.
+
+;;; Create a function that generalizes symmetrize-body-parts and the function you created in Exercise 5. The new function should take a collection of body parts and the number of matching body parts to add. If you're completely new to Lisp languages and functional programming, it probably won't be obvious how to do this. If you get stuck, just move on to the next chapter and revisit the problem later.
